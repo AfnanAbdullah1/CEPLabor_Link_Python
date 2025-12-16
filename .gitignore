@@ -1,0 +1,14 @@
+
+node_modules/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore Virtual Environments (Adjust name if yours is different)
+venv/
+env/
+.venv/
+
+# Ignore Environment Variables (Security risk if committed)
+.env

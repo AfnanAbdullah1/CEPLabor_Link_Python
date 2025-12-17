@@ -1,55 +1,35 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Text, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from .database import Base
+from app.database import Base
+
 
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, nullable=False, index=True)
     password = Column(String, nullable=False)
-    role = Column(String, nullable=False)  # "worker" or "hirer"
-    
-    # Contact & Location
-    phone = Column(String, nullable=True)
-    location = Column(String, nullable=True)
-    profile_image = Column(String, nullable=True)  # URL or file path
+    phone = Column(String)
+    role = Column(String, nullable=False)  # 'worker' or 'hirer'
+    location = Column(String)
+    experience = Column(Integer, default=0)
+    profile_image = Column(String)
     
     # Worker-specific fields
-    skills = Column(Text, nullable=True)  # JSON string array
-    experience = Column(String, default="", nullable=True)
-    hourly_rate = Column(Float, nullable=True)
+    skills = Column(Text)  # JSON string
+    hourly_rate = Column(Float)
     is_available = Column(Boolean, default=True)
-    rating = Column(Float, default=0.0)  # Average rating 0-5
-    total_jobs = Column(Integer, default=0)  # Jobs completed
+    rating = Column(Float, default=0.0)
+    total_jobs = Column(Integer, default=0)
     
-    # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
-    sent_messages = relationship("Message", foreign_keys="Message.sender_id", back_populates="sender")
-    received_messages = relationship("Message", foreign_keys="Message.receiver_id", back_populates="receiver")
-    hiring_requests_sent = relationship("HiringRequest", foreign_keys="HiringRequest.hirer_id", back_populates="hirer")
-    hiring_requests_received = relationship("HiringRequest", foreign_keys="HiringRequest.worker_id", back_populates="worker")
-    reviews_received = relationship("Review", foreign_keys="Review.worker_id", back_populates="worker")
-    reviews_given = relationship("Review", foreign_keys="Review.hirer_id", back_populates="hirer")
-
-
-class Message(Base):
-    __tablename__ = "messages"
-
-    id = Column(Integer, primary_key=True, index=True)
-    sender_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    receiver_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    message = Column(Text, nullable=False)
-    timestamp = Column(DateTime, default=datetime.utcnow)
-    is_read = Column(Boolean, default=False)
-
-    sender = relationship("User", foreign_keys=[sender_id], back_populates="sent_messages")
-    receiver = relationship("User", foreign_keys=[receiver_id], back_populates="received_messages")
+    hiring_requests_as_hirer = relationship("HiringRequest", back_populates="hirer", foreign_keys="HiringRequest.hirer_id")
+    hiring_requests_as_worker = relationship("HiringRequest", back_populates="worker", foreign_keys="HiringRequest.worker_id")
+    reviews = relationship("Review", back_populates="worker", foreign_keys="Review.worker_id")
 
 
 class HiringRequest(Base):
@@ -58,20 +38,17 @@ class HiringRequest(Base):
     id = Column(Integer, primary_key=True, index=True)
     hirer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     worker_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    
     job_title = Column(String, nullable=False)
     job_description = Column(Text, nullable=False)
-    job_location = Column(String, nullable=True)
-    estimated_hours = Column(Float, nullable=True)
-    offered_rate = Column(Float, nullable=True)
-    
-    status = Column(String, default="pending")  # pending, accepted, rejected, completed, cancelled
-    
+    job_location = Column(String)
+    estimated_hours = Column(Float)
+    offered_rate = Column(Float)
+    status = Column(String, default="pending")  # pending, accepted, rejected, completed
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    hirer = relationship("User", foreign_keys=[hirer_id], back_populates="hiring_requests_sent")
-    worker = relationship("User", foreign_keys=[worker_id], back_populates="hiring_requests_received")
+    # Relationships
+    hirer = relationship("User", back_populates="hiring_requests_as_hirer", foreign_keys=[hirer_id])
+    worker = relationship("User", back_populates="hiring_requests_as_worker", foreign_keys=[worker_id])
     review = relationship("Review", back_populates="hiring_request", uselist=False)
 
 
@@ -82,12 +59,10 @@ class Review(Base):
     hiring_request_id = Column(Integer, ForeignKey("hiring_requests.id"), nullable=False)
     worker_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     hirer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    
-    rating = Column(Integer, nullable=False)  # 1-5
-    comment = Column(Text, nullable=True)
-    
+    rating = Column(Float, nullable=False)
+    comment = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     
+    # Relationships
     hiring_request = relationship("HiringRequest", back_populates="review")
-    worker = relationship("User", foreign_keys=[worker_id], back_populates="reviews_received")
-    hirer = relationship("User", foreign_keys=[hirer_id], back_populates="reviews_given")
+    worker = relationship("User", back_populates="reviews", foreign_keys=[worker_id])

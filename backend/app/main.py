@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.auth import auth_router
-from app.routers import users, chat, workers, hiring
+from app.routers import users, hiring
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -21,8 +21,6 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router.router)
 app.include_router(users.router)
-app.include_router(chat.router)
-app.include_router(workers.router)
 app.include_router(hiring.router)
 
 @app.get("/")

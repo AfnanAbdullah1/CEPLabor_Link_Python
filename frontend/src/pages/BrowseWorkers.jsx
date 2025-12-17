@@ -27,16 +27,49 @@ function BrowseWorkers() {
 
     async function fetchWorkers() {
         try {
-            const params = new URLSearchParams();
-            if (filters.skill) params.append("skill", filters.skill);
-            if (filters.location) params.append("location", filters.location);
-            if (filters.min_rate) params.append("min_rate", filters.min_rate);
-            if (filters.max_rate) params.append("max_rate", filters.max_rate);
-            if (filters.min_rating) params.append("min_rating", filters.min_rating);
-            if (filters.is_available) params.append("is_available", "true");
+            // Use the existing /users endpoint with role=worker filter
+            const res = await API.get("/users?role=worker");
 
-            const res = await API.get(`/workers/search?${params.toString()}`);
-            setWorkers(res.data);
+            // Apply client-side filtering
+            let filteredWorkers = res.data;
+
+            if (filters.skill) {
+                filteredWorkers = filteredWorkers.filter(w =>
+                    w.skills && JSON.parse(w.skills).some(skill =>
+                        skill.toLowerCase().includes(filters.skill.toLowerCase())
+                    )
+                );
+            }
+
+            if (filters.location) {
+                filteredWorkers = filteredWorkers.filter(w =>
+                    w.location && w.location.toLowerCase().includes(filters.location.toLowerCase())
+                );
+            }
+
+            if (filters.min_rate) {
+                filteredWorkers = filteredWorkers.filter(w =>
+                    w.hourly_rate >= parseFloat(filters.min_rate)
+                );
+            }
+
+            if (filters.max_rate) {
+                filteredWorkers = filteredWorkers.filter(w =>
+                    w.hourly_rate <= parseFloat(filters.max_rate)
+                );
+            }
+
+            if (filters.min_rating) {
+                filteredWorkers = filteredWorkers.filter(w =>
+                    w.rating >= parseFloat(filters.min_rating)
+                );
+            }
+
+            if (filters.is_available) {
+                filteredWorkers = filteredWorkers.filter(w => w.is_available);
+            }
+
+            setWorkers(filteredWorkers);
         } catch (error) {
             console.error("Error fetching workers:", error);
         } finally {

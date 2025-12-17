@@ -1,110 +1,136 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import API from "../api";
-import "../styles/auth.css";
+import "../styles/dashboard.css";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  async function handleLogin(e) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    useEffect(() => {
+        // Check if there's a success message from signup
+        if (location.state?.message) {
+            setSuccessMessage(location.state.message);
+            // Clear the state after showing the message
+            window.history.replaceState({}, document.title);
+        }
+    }, [location]);
 
-    try {
-      const res = await API.post("/auth/login", { email, password });
-
-      // Store user info in localStorage
-      localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("user_id", res.data.user_id);
-      localStorage.setItem("role", res.data.role);
-      localStorage.setItem("name", res.data.name);
-
-      // Role-based redirection
-      if (res.data.role === "worker") {
-        navigate("/dashboard/worker");
-      } else if (res.data.role === "hirer") {
-        navigate("/dashboard/hirer");
-      } else {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError(
-        error.response?.data?.detail || "Invalid login credentials. Please try again."
-      );
-    } finally {
-      setLoading(false);
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     }
-  }
 
-  return (
-    <div className="auth-container">
-      <div className="auth-card fade-in">
-        <div className="auth-header">
-          <h1 className="text-gradient">Welcome Back</h1>
-          <p>Sign in to continue to LaborLink</p>
-        </div>
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
 
-        <form onSubmit={handleLogin} className="auth-form">
-          <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        try {
+            const res = await API.post("/auth/login", formData);
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+            // Store token and user info
+            localStorage.setItem("token", res.data.access_token);
+            localStorage.setItem("user_id", res.data.user_id);
+            localStorage.setItem("role", res.data.role);
 
-          {error && (
-            <div className="alert alert-error">
-              <span>⚠️</span>
-              {error}
+            // Redirect to appropriate dashboard
+            navigate(`/dashboard/${res.data.role}`);
+        } catch (err) {
+            console.error("Login error:", err);
+            setError(err.response?.data?.detail || "Login failed. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <div className="dashboard-container fade-in" style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "100vh",
+            padding: "var(--spacing-xl)"
+        }}>
+            <div className="card" style={{ maxWidth: "500px", width: "100%" }}>
+                <div className="card-header">
+                    <h2 className="card-title">Welcome Back</h2>
+                    <p className="card-subtitle">Login to your LaborLink account</p>
+                </div>
+
+                <div className="card-body">
+                    {successMessage && (
+                        <div className="alert alert-success">
+                            {successMessage}
+                        </div>
+                    )}
+
+                    {error && (
+                        <div className="alert alert-error">
+                            {error}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label className="form-label">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                className="form-input"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                placeholder="your.email@example.com"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                className="form-input"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                placeholder="••••••••"
+                            />
+                        </div>
+
+                        <button type="submit" className="btn btn-primary" style={{ width: "100%" }} disabled={loading}>
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
+                    </form>
+
+                    <div style={{
+                        marginTop: "var(--spacing-lg)",
+                        textAlign: "center",
+                        color: "var(--text-muted)"
+                    }}>
+                        Don't have an account?{" "}
+                        <Link to="/signup" style={{
+                            color: "var(--primary)",
+                            textDecoration: "none",
+                            fontWeight: "500"
+                        }}>
+                            Sign up here
+                        </Link>
+                    </div>
+                </div>
             </div>
-          )}
-
-          <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
-            {loading ? (
-              <>
-                <span className="spinner spinner-sm"></span>
-                Signing in...
-              </>
-            ) : (
-              "Sign In"
-            )}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>
-            Don't have an account?{" "}
-            <Link to="/signup" className="auth-link">
-              Sign up now
-            </Link>
-          </p>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Login;

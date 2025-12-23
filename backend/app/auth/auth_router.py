@@ -5,16 +5,21 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from typing import Optional
 import json
+import os
+from dotenv import load_dotenv
 
 from app.database import get_db
 from app.models import User
 from app.schemas import UserCreate, UserLogin, Token, UserResponse
 from app.auth.hashing import Hash
 
+# Load environment variables
+load_dotenv()
+
 # JWT Configuration
-SECRET_KEY = "your-secret-key-here-change-in-production"  # TODO: Move to environment variable
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-change-in-production")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")

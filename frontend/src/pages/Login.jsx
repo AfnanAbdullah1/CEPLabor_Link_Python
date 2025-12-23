@@ -44,6 +44,17 @@ function Login() {
             localStorage.setItem("user_id", res.data.user_id);
             localStorage.setItem("role", res.data.role);
 
+            // Fetch user details to get the name
+            try {
+                const userRes = await API.get(`/users/${res.data.user_id}`);
+                localStorage.setItem("name", userRes.data.name);
+            } catch (err) {
+                console.error("Error fetching user details:", err);
+            }
+
+            // Notify App component about auth change
+            window.dispatchEvent(new Event("authChange"));
+
             // Redirect to appropriate dashboard
             navigate(`/dashboard/${res.data.role}`);
         } catch (err) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // Styles
@@ -19,6 +19,8 @@ import Chat from "./pages/Chat";
 import BrowseWorkers from "./pages/BrowseWorkers";
 import MyRequests from "./pages/MyRequests";
 import WorkerRequests from "./pages/WorkerRequests";
+import WorkerProfile from "./pages/WorkerProfile";
+import HireWorker from "./pages/HireWorker";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -30,7 +32,29 @@ function ProtectedRoute({ children }) {
 }
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem("token");
+  // Use state for authentication status
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+
+  // Listen for changes in authentication status
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsAuthenticated(!!localStorage.getItem("token"));
+    };
+
+    // Check on mount
+    checkAuth();
+
+    // Listen for storage changes (from other tabs/windows)
+    window.addEventListener("storage", checkAuth);
+
+    // Custom event for same-tab updates
+    window.addEventListener("authChange", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("authChange", checkAuth);
+    };
+  }, []);
 
   return (
     <div className="App">
@@ -103,6 +127,22 @@ function App() {
           element={
             <ProtectedRoute>
               <WorkerRequests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/worker/:workerId"
+          element={
+            <ProtectedRoute>
+              <WorkerProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hire/:workerId"
+          element={
+            <ProtectedRoute>
+              <HireWorker />
             </ProtectedRoute>
           }
         />

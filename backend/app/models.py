@@ -66,3 +66,18 @@ class Review(Base):
     # Relationships
     hiring_request = relationship("HiringRequest", back_populates="review")
     worker = relationship("User", back_populates="reviews", foreign_keys=[worker_id])
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sender_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    receiver_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    message = Column(Text, nullable=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    is_read = Column(Boolean, default=False)
+    
+    # Relationships
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])

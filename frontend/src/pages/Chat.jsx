@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import API from "../api";
 import "../styles/dashboard.css";
 
 function Chat() {
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUserName, setSelectedUserName] = useState("");
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const currentUserId = parseInt(localStorage.getItem("user_id"));
 
@@ -19,7 +21,15 @@ function Chat() {
       navigate("/login");
       return;
     }
+
     fetchConversations();
+
+    // Check if there's a user parameter in URL to start a conversation
+    const userParam = searchParams.get("user");
+    if (userParam) {
+      const targetUserId = parseInt(userParam);
+      startConversationWithUser(targetUserId);
+    }
   }, [currentUserId, navigate]);
 
   async function fetchConversations() {
@@ -33,8 +43,22 @@ function Chat() {
     }
   }
 
-  async function loadConversation(userId) {
+  async function startConversationWithUser(userId) {
+    try {
+      // Fetch user details to get their name
+      const userRes = await API.get(`/users/${userId}`);
+      setSelectedUser(userId);
+      setSelectedUserName(userRes.data.name);
+      loadConversation(userId);
+    } catch (error) {
+      console.error("Error starting conversation:", error);
+    }
+  }
+
+  async function loadConversation(userId, userName = "") {
     setSelectedUser(userId);
+    if (userName) setSelectedUserName(userName);
+
     try {
       const res = await API.get(`/chat/conversation/${currentUserId}/${userId}`);
       setMessages(res.data);
@@ -45,6 +69,9 @@ function Chat() {
           API.put(`/chat/mark-read/${msg.id}`).catch(console.error);
         }
       });
+
+      // Refresh conversations to update unread counts
+      fetchConversations();
     } catch (error) {
       console.error("Error loading conversation:", error);
     }
@@ -56,8 +83,8 @@ function Chat() {
 
     setSending(true);
     try {
-      await API.post("/chat/send", {
-        sender_id: currentUserId,
+      // Match backend signature: sender_id as query param
+      await API.post(`/chat/send?sender_id=${currentUserId}`, {
         receiver_id: selectedUser,
         message: newMessage
       });
@@ -105,7 +132,7 @@ function Chat() {
                 {conversations.map((conv) => (
                   <div
                     key={conv.user_id}
-                    onClick={() => loadConversation(conv.user_id)}
+                    onClick={() => loadConversation(conv.user_id, conv.user_name)}
                     style={{
                       padding: "var(--spacing-md)",
                       background: selectedUser === conv.user_id ? "var(--glass-border)" : "var(--glass-bg)",
@@ -117,10 +144,10 @@ function Chat() {
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-sm)", marginBottom: "var(--spacing-xs)" }}>
                       <div className="user-avatar" style={{ width: "40px", height: "40px" }}>
-                        {conv.name?.charAt(0).toUpperCase()}
+                        {conv.user_name?.charAt(0).toUpperCase()}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <strong style={{ color: "var(--text-primary)" }}>{conv.name}</strong>
+                        <strong style={{ color: "var(--text-primary)" }}>{conv.user_name}</strong>
                         {conv.unread_count > 0 && (
                           <span className="badge badge-primary" style={{ marginLeft: "var(--spacing-sm)", fontSize: "10px" }}>
                             {conv.unread_count}
@@ -153,7 +180,7 @@ function Chat() {
             <>
               <div className="card-header">
                 <h3 className="card-title">
-                  {conversations.find(c => c.user_id === selectedUser)?.name || "Chat"}
+                  {selectedUserName || conversations.find(c => c.user_id === selectedUser)?.user_name || "Chat"}
                 </h3>
               </div>
 

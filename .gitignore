@@ -1,14 +1,35 @@
 
+# Node.js
 node_modules/
 
-# Ignore Python cache
+# Python cache
 __pycache__/
 *.py[cod]
 
-# Ignore Virtual Environments (Adjust name if yours is different)
+# Virtual Environments
 venv/
 env/
 .venv/
 
-# Ignore Environment Variables (Security risk if committed)
+# Environment Variables (Security risk if committed)
 .env
+
+# Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# macOS
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

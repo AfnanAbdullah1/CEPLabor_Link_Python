@@ -4,6 +4,7 @@ import API from "../api";
 import "../styles/dashboard.css";
 
 function HirerDashboard() {
+    const [user, setUser] = useState(null);
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -22,6 +23,10 @@ function HirerDashboard() {
 
     async function fetchDashboardData(userId) {
         try {
+            // Fetch user profile
+            const userRes = await API.get(`/users/${userId}`);
+            setUser(userRes.data);
+
             // Fetch hiring requests
             const requestsRes = await API.get(`/hiring/requests/hirer/${userId}`);
             setRequests(requestsRes.data);
@@ -44,13 +49,11 @@ function HirerDashboard() {
     const activeRequests = requests.filter(r => r.status === "accepted");
     const completedRequests = requests.filter(r => r.status === "completed");
 
-    const userName = localStorage.getItem("name");
-
     return (
         <div className="dashboard-container fade-in">
             <div className="dashboard-header">
                 <div>
-                    <h1>Welcome back, {userName}! 💼</h1>
+                    <h1>Welcome back, {user?.name}! 💼</h1>
                     <p>Find skilled workers and manage your hiring requests</p>
                 </div>
             </div>

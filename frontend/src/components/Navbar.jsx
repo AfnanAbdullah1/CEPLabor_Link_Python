@@ -21,6 +21,8 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
+    // Notify App component about auth change
+    window.dispatchEvent(new Event("authChange"));
     navigate("/login");
   };
 

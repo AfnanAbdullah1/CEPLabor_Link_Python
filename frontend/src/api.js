@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://192.168.1.19:8000",
+  baseURL: process.env.REACT_APP_API_URL || "http://10.122.168.236:8000",
 });
 
 // Auto-add JWT token

@@ -1,69 +1,69 @@
-# CEPLabor_Link_Python
+# LaborLink - Complete Labor Marketplace Platform
 
-A full-stack labor marketplace platform that connects workers and hirers, enabling seamless job matching, communication, and hiring management.
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Database Schema](#database-schema)
-- [Frontend Routes](#frontend-routes)
+A full-stack web application connecting skilled workers with hirers for job opportunities. Built with FastAPI (Python) backend and React.js frontend.
 
 ## 🎯 Overview
 
-LaborLink is a comprehensive platform designed to bridge the gap between skilled workers and those seeking their services. The platform supports two main user roles:
+LaborLink is a comprehensive marketplace platform that bridges the gap between skilled labor workers and those seeking their services. The platform enables seamless job matching, real-time communication, hiring management, and quality feedback through reviews.
 
-- **Workers**: Can create profiles, showcase skills, set hourly rates, and receive job requests
-- **Hirers**: Can search for workers, send hiring requests, communicate via chat, and leave reviews
+## ✨ Key Features
 
-## ✨ Features
-
-### Authentication & User Management
+### 🔐 Authentication & Security
 - User registration with role selection (Worker/Hirer)
-- Secure login with JWT token authentication
-- Password hashing using bcrypt
+- Secure JWT token-based authentication
+- Password hashing with bcrypt
 - Role-based access control
+- Protected routes and API endpoints
 
-### Worker Features
-- **Profile Management**: Create and update profiles with skills, experience, hourly rate, and availability
-- **Worker Dashboard**: View job requests, manage availability, track completed jobs
-- **Search & Discovery**: Workers can be discovered through advanced search filters
+### 👷 Worker Features
+- **Profile Management**: Create detailed profiles with skills, experience, hourly rates, and availability status
+- **Worker Dashboard**: View job requests, track earnings, manage profile visibility
+- **Job Requests**: Accept/reject hiring requests
+- **Ratings & Reviews**: Build reputation through client feedback
+- **Messaging**: Direct communication with potential hirers
 
-### Hirer Features
-- **Worker Search**: Advanced search with filters for skills, location, rate range, rating, and availability
-- **Hiring Requests**: Create and manage job requests with details like job title, description, location, estimated hours, and offered rate
-- **Hirer Dashboard**: Track all hiring requests, view job history, and manage active jobs
-
-### Communication
-- **Real-time Chat**: Direct messaging between workers and hirers
-- **Conversation Management**: View all conversations with unread message counts
-- **Message Status**: Read/unread message tracking
-
-### Job Management
-- **Request Lifecycle**: Manage requests through statuses (pending, accepted, rejected, completed, cancelled)
-- **Job Tracking**: Automatic tracking of completed jobs and total hours worked
+### 💼 Hirer Features
+- **Advanced Worker Search**: Filter by skills, location, hourly rate, rating, and availability
+- **Worker Profiles**: View detailed worker information, ratings, and past job history
+- **Hiring Requests**: Send job offers with details (title, description, location, hours, rate)
+- **Request Management**: Track all hiring requests with status updates
+- **Chat System**: Communicate directly with workers
 - **Review System**: Rate and review workers after job completion
-- **Rating System**: Automatic calculation of average worker ratings based on reviews
+
+### 💬 Real-Time Communication
+- One-on-one messaging between workers and hirers
+- Conversation history with read/unread status
+- Unread message notifications
+- Start conversations directly from worker profiles
+
+### ⭐ Review & Rating System
+- 5-star rating system for completed jobs
+- Optional written comments for detailed feedback
+- Automatic worker rating calculation
+- Review history and statistics
+
+### 📱 Mobile & Network Access
+- Responsive design works on all devices
+- Network-accessible (supports both localhost and LAN access)
+- Environment-based configuration for easy deployment
 
 ## 🛠 Tech Stack
 
 ### Backend
-- **Framework**: FastAPI (Python)
-- **Database**: SQLite with SQLAlchemy ORM
-- **Authentication**: JWT (JSON Web Tokens) with python-jose
-- **Password Hashing**: passlib with bcrypt
-- **Validation**: Pydantic for data validation
+- **Framework**: FastAPI 0.104.1
+- **Database**: SQLite with SQLAlchemy 2.0.23 ORM
+- **Authentication**: python-jose 3.3.0 (JWT tokens)
+- **Password Security**: passlib 1.7.4 with bcrypt
+- **Validation**: Pydantic (built into FastAPI)
+- **CORS**: FastAPI CORS middleware
+- **Environment**: python-dotenv 1.0.0
 
 ### Frontend
 - **Framework**: React.js 18.2.0
 - **Routing**: React Router DOM 6.20.0
 - **HTTP Client**: Axios 1.6.0
 - **Build Tool**: Create React App
+- **Styling**: Custom CSS with modern design system
 
 ## 📁 Project Structure
 
@@ -72,245 +72,348 @@ CEPLabor_Link_Python/
 ├── backend/
 │   ├── app/
 │   │   ├── auth/
-│   │   │   ├── auth_router.py      # Authentication endpoints
-│   │   │   └── hashing.py          # Password hashing utilities
+│   │   │   ├── auth_router.py      # Login/Signup endpoints
+│   │   │   └── hashing.py          # Password hashing
 │   │   ├── routers/
-│   │   │   ├── users.py            # User management endpoints
-│   │   │   ├── workers.py          # Worker search and profiles
-│   │   │   ├── hiring.py           # Hiring requests and reviews
-│   │   │   ├── chat.py             # Messaging endpoints
-│   │   │   └── dashboard.py        # Dashboard statistics
-│   │   ├── utils/
-│   │   │   ├── helpers.py          # Helper functions
-│   │   │   └── notifications.py    # Notification utilities
-│   │   ├── main.py                 # FastAPI application entry point
-│   │   ├── models.py               # SQLAlchemy database models
-│   │   ├── schemas.py              # Pydantic schemas for validation
-│   │   └── database.py             # Database configuration
-│   ├── laborlink.db                # SQLite database file
+│   │   │   ├── users.py            # User CRUD operations
+│   │   │   ├── hiring.py           # Hiring requests & reviews
+│   │   │   ├── chat.py             # Messaging system
+│   │   │   └── services.py         # Service listings
+│   │   ├── models.py               # Database models
+│   │   ├── schemas.py              # Pydantic schemas
+│   │   ├── database.py             # Database configuration
+│   │   └── main.py                 # FastAPI app entry point
+│   ├── laborlink.db                # SQLite database
+│   ├── migrate_database.py         # Database migration script
 │   └── requirements.txt            # Python dependencies
 │
 ├── frontend/
+│   ├── public/
+│   │   └── index.html
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx          # Navigation component
-│   │   │   ├── ChatWindow.jsx      # Chat interface component
-│   │   │   └── JobCard.jsx         # Job card component
+│   │   │   └── Navbar.jsx          # Navigation bar
 │   │   ├── pages/
 │   │   │   ├── Login.jsx           # Login page
-│   │   │   ├── Signup.jsx         # Registration page
-│   │   │   ├── WorkerDashboard.jsx # Worker dashboard
-│   │   │   ├── HirerDashboard.jsx  # Hirer dashboard
-│   │   │   ├── Profile.jsx        # User profile page
-│   │   │   ├── BrowseWorkers.jsx   # Worker search page
-│   │   │   ├── Chat.jsx            # Chat page
-│   │   │   ├── MyRequests.jsx     # Hirer's requests page
-│   │   │   └── WorkerRequests.jsx # Worker's requests page
-│   │   ├── styles/                 # CSS stylesheets
-│   │   ├── api.js                  # Axios API configuration
-│   │   ├── App.js                  # Main React component
+│   │   │   ├── Signup.jsx          # Registration page
+│   │   │   ├── Dashboard.jsx       # Main dashboard
+│   │   │   ├── WorkerDashboard.jsx # Worker-specific dashboard
+│   │   │   ├── HirerDashboard.jsx  # Hirer-specific dashboard
+│   │   │   ├── BrowseWorkers.jsx   # Worker search/browse
+│   │   │   ├── WorkerProfile.jsx   # Individual worker profile
+│   │   │   ├── Profile.jsx         # User profile management
+│   │   │   ├── HireWorker.jsx      # Send hiring request form
+│   │   │   ├── MyRequests.jsx      # Hirer's request tracking
+│   │   │   ├── WorkerRequests.jsx  # Worker's request management
+│   │   │   ├── Chat.jsx            # Messaging interface
+│   │   │   └── ReviewForm.jsx      # Submit worker reviews
+│   │   ├── styles/
+│   │   │   └── dashboard.css       # Main stylesheet
+│   │   ├── api.js                  # Axios configuration
+│   │   ├── App.js                  # Main app component
 │   │   └── index.js                # React entry point
-│   ├── package.json                # Node.js dependencies
-│   └── public/                     # Static files
+│   ├── package.json
+│   └── .env                        # Environment variables (gitignored)
 │
-└── README.md                       # Project documentation
+├── .env.example                    # Example environment variables
+├── .gitignore                      # Git ignore rules
+└── README.md                       # This file
 ```
 
 ## 🚀 Installation
 
 ### Prerequisites
 - Python 3.8 or higher
-- Node.js 14.x or higher
+- Node.js 14 or higher
 - npm or yarn
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
-```bash
-cd backend
-```
+1. **Navigate to backend directory:**
+   ```bash
+   cd backend
+   ```
 
-2. Create a virtual environment (recommended):
-```bash
-python -m venv venv
-```
+2. **Create virtual environment (recommended):**
+   ```bash
+   python -m venv venv
+   
+   # Windows
+   venv\Scripts\activate
+   
+   # Linux/Mac
+   source venv/bin/activate
+   ```
 
-3. Activate the virtual environment:
-   - **Windows**:
-     ```bash
-     venv\Scripts\activate
-     ```
-   - **Linux/Mac**:
-     ```bash
-     source venv/bin/activate
-     ```
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-4. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
+4. **Set up environment variables:**
+   - Copy `.env.example` to `.env`
+   - Update values as needed (SECRET_KEY, DATABASE_URL, etc.)
+
+5. **Initialize database:**
+   ```bash
+   # Database tables are created automatically on first run
+   # Or run migration script:
+   python migrate_database.py
+   ```
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
+1. **Navigate to frontend directory:**
+   ```bash
+   cd frontend
+   ```
 
-2. Install Node.js dependencies:
-```bash
-npm install
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure API URL (optional):**
+   - Create `.env` file in frontend directory
+   - Add: `REACT_APP_API_URL=http://your-backend-url:8000`
+   - Default is `http://localhost:8000`
 
 ## 💻 Usage
 
-### Starting the Backend Server
+### Running the Application
 
-1. Navigate to the backend directory:
+#### Start Backend (Terminal 1)
 ```bash
 cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+Backend will run on: `http://localhost:8000`
 
-2. Activate your virtual environment (if not already activated)
+**Note:** Use `--host 0.0.0.0` for network access (mobile/other devices)
 
-3. Start the FastAPI server:
-```bash
-uvicorn app.main:app --reload
-```
-
-The API will be available at `http://127.0.0.1:8000`
-
-You can access the interactive API documentation at:
-- Swagger UI: `http://127.0.0.1:8000/docs`
-- ReDoc: `http://127.0.0.1:8000/redoc`
-
-### Starting the Frontend Development Server
-
-1. Navigate to the frontend directory:
+#### Start Frontend (Terminal 2)
 ```bash
 cd frontend
-```
-
-2. Start the React development server:
-```bash
 npm start
 ```
+Frontend will run on: `http://localhost:3000`
 
-The frontend will be available at `http://localhost:3000`
+### Network Access (Mobile/Other Devices)
 
-### Database
+1. **Find your computer's IP address:**
+   ```bash
+   # Windows
+   ipconfig
+   
+   # Linux/Mac
+   ifconfig
+   ```
 
-The SQLite database (`laborlink.db`) will be automatically created when you first run the backend server. The database tables are created automatically using SQLAlchemy's `create_all()` method.
+2. **Start backend with network binding:**
+   ```bash
+   python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
 
-## 📚 API Documentation
+3. **Update frontend API URL:**
+   - Create `frontend/.env` file:
+     ```
+     REACT_APP_API_URL=http://YOUR_IP_ADDRESS:8000
+     ```
+   - Or update `frontend/src/api.js` fallback URL
 
-### Authentication Endpoints (`/auth`)
+4. **Access from mobile:**
+   - Open browser on your phone
+   - Navigate to: `http://YOUR_IP_ADDRESS:3000`
 
-- `POST /auth/register` - Register a new user (worker or hirer)
-- `POST /auth/login` - Login and receive JWT token
+### Default User Roles
 
-### User Endpoints (`/users`)
+After signup, users can choose their role:
+- **Worker**: Create profile, receive job requests, chat with hirers
+- **Hirer**: Browse workers, send hiring requests, leave reviews
 
-- `GET /users/` - Get all users (optional role filter)
+##  📡 API Documentation
+
+Once the backend is running, access interactive API documentation:
+- **Swagger UI**: `http://localhost:8000/docs`
+- **ReDoc**: `http://localhost:8000/redoc`
+
+### Main API Endpoints
+
+#### Authentication (`/auth`)
+- `POST /auth/signup` - Register new user
+- `POST /auth/login` - Login and get JWT token
+
+#### Users (`/users`)
+- `GET /users/` - Get all users (with optional role filter)
+- `GET /users/{id}` - Get user by ID
 - `GET /users/workers` - Get all workers
-- `GET /users/{user_id}` - Get user by ID
-- `GET /users/{user_id}/stats` - Get user statistics
-- `PUT /users/{user_id}/update` - Update user profile
+- `PUT /users/{id}/update` - Update user profile
 
-### Worker Endpoints (`/workers`)
+#### Hiring (`/hiring`)
+- `POST /hiring/requests?hirer_id={id}` - Create hiring request
+- `GET /hiring/requests/hirer/{id}` - Get hirer's requests
+- `GET /hiring/requests/worker/{id}` - Get worker's requests
+- `PUT /hiring/requests/{id}/status` - Update request status
+- `POST /hiring/requests/{id}/review?hirer_id={id}` - Submit review
 
-- `GET /workers/search` - Search workers with filters (skill, location, rate, rating, availability)
-- `GET /workers/{worker_id}` - Get worker profile by ID
-- `GET /workers/{worker_id}/reviews` - Get all reviews for a worker
-- `GET /workers/categories/all` - Get predefined skill categories
-
-### Hiring Endpoints (`/hiring`)
-
-- `POST /hiring/requests` - Create a new hiring request
-- `GET /hiring/requests/{request_id}` - Get hiring request by ID
-- `GET /hiring/requests/hirer/{hirer_id}` - Get all requests by a hirer
-- `GET /hiring/requests/worker/{worker_id}` - Get all requests for a worker
-- `PUT /hiring/requests/{request_id}/status` - Update request status
-- `POST /hiring/requests/{request_id}/review` - Submit a review after job completion
-
-### Chat Endpoints (`/chat`)
-
-- `POST /chat/send` - Send a message
-- `GET /chat/conversation/{user1_id}/{user2_id}` - Get conversation between two users
-- `GET /chat/conversations/{user_id}` - Get all conversations for a user
+#### Chat (`/chat`)
+- `POST /chat/send?sender_id={id}` - Send message
+- `GET /chat/conversations/{user_id}` - Get all conversations
+- `GET /chat/conversation/{user1_id}/{user2_id}` - Get messages
 - `PUT /chat/mark-read/{message_id}` - Mark message as read
-- `GET /chat/unread/{user_id}` - Get unread message count
-
-### Dashboard Endpoints (`/dashboard`)
-
-- `GET /dashboard/{user_id}` - Get dashboard statistics for a user
+- `GET /chat/unread/{user_id}` - Get unread count
 
 ## 🗄 Database Schema
 
-### User Table
-- `id` (Primary Key)
-- `name`, `email`, `password`, `role` (worker/hirer)
-- `phone`, `location`, `profile_image`
-- Worker-specific: `skills`, `experience`, `hourly_rate`, `is_available`, `rating`, `total_jobs`
-- Timestamps: `created_at`, `updated_at`
+### Tables
 
-### Message Table
-- `id` (Primary Key)
-- `sender_id`, `receiver_id` (Foreign Keys to User)
-- `message`, `timestamp`, `is_read`
+#### 1. **users**
+- `id` - Primary key
+- `name` - Full name
+- `email` - Unique email (login identifier)
+- `password` - Hashed password
+- `role` - 'worker' or 'hirer'
+- `phone`, `location`, `experience` - Profile details
+- `skills` - JSON array of skills (for workers)
+- `hourly_rate` - Worker's rate (for workers)
+- `is_available` - Availability status (for workers)
+- `rating` - Average rating (calculated from reviews)
+- `total_jobs` - Completed jobs count
+- `created_at` - Registration timestamp
 
-### HiringRequest Table
-- `id` (Primary Key)
-- `hirer_id`, `worker_id` (Foreign Keys to User)
-- `job_title`, `job_description`, `job_location`
-- `estimated_hours`, `offered_rate`
-- `status` (pending/accepted/rejected/completed/cancelled)
-- Timestamps: `created_at`, `updated_at`
+#### 2. **hiring_requests**
+- `id` - Primary key
+- `hirer_id` - Foreign key to users
+- `worker_id` - Foreign key to users
+- `job_title`, `job_description`, `job_location` - Job details
+- `estimated_hours`, `offered_rate` - Job terms
+- `status` - 'pending', 'accepted', 'rejected', 'completed', 'cancelled'
+- `created_at` - Request timestamp
 
-### Review Table
-- `id` (Primary Key)
-- `hiring_request_id` (Foreign Key to HiringRequest)
-- `worker_id`, `hirer_id` (Foreign Keys to User)
-- `rating` (1-5), `comment`
-- `created_at`
+#### 3. **messages**
+- `id` - Primary key
+- `sender_id` - Foreign key to users
+- `receiver_id` - Foreign key to users
+- `message` - Message content
+- `timestamp` - Message time
+- `is_read` - Read status boolean
 
-## 🎨 Frontend Routes
+#### 4. **reviews**
+- `id` - Primary key
+- `hiring_request_id` - Foreign key to hiring_requests
+- `worker_id` - Foreign key to users (worker being reviewed)
+- `hirer_id` - Foreign key to users (reviewer)
+- `rating` - 1-5 star rating
+- `comment` - Optional review text
+- `created_at` - Review timestamp
 
-- `/login` - Login page
-- `/signup` - Registration page
-- `/dashboard` - General dashboard (redirects based on role)
-- `/dashboard/worker` - Worker-specific dashboard
-- `/dashboard/hirer` - Hirer-specific dashboard
-- `/profile` - User profile management
-- `/browse-workers` - Search and browse workers
-- `/chat` - Messaging interface
-- `/my-requests` - Hirer's hiring requests
-- `/requests` - Worker's received requests
+## 🧭 Frontend Routes
 
-## 🔐 Security Features
+| Route | Component | Description | Access |
+|-------|-----------|-------------|--------|
+| `/` | Dashboard | Redirects based on auth status | Public |
+| `/login` | Login | User login | Public |
+| `/signup` | Signup | User registration | Public |
+| `/dashboard/worker` | WorkerDashboard | Worker main dashboard | Worker only |
+| `/dashboard/hirer` | HirerDashboard | Hirer main dashboard | Hirer only |
+| `/profile` | Profile | User profile management | Protected |
+| `/browse-workers` | BrowseWorkers | Search and filter workers | Hirer only |
+| `/worker/:id` | WorkerProfile | View worker details | Hirer only |
+| `/hire/:workerId` | HireWorker | Send hiring request | Hirer only |
+| `/my-requests` | MyRequests | Hirer's request tracking | Hirer only |
+| `/requests` | WorkerRequests | Worker's request management | Worker only |
+| `/review/:requestId` | ReviewForm | Submit worker review | Hirer only |
+| `/chat` | Chat | Messaging interface | Protected |
 
-- JWT-based authentication
-- Password hashing with bcrypt
-- CORS middleware configured for frontend
-- Role-based access control
-- Input validation using Pydantic schemas
+## 🎨 Features Showcase
 
-## 📝 Notes
+### For Workers:
+1. Create comprehensive profile with skills and hourly rate
+2. Set availability status (Available/Unavailable)
+3. Receive and manage job requests
+4. View request details (job description, offered rate, etc.)
+5. Accept or reject requests
+6. Communicate with hirers via chat
+7. Build reputation through ratings and reviews
 
-- The backend uses SQLite for simplicity. For production, consider migrating to PostgreSQL or MySQL
-- JWT secret key should be moved to environment variables in production
-- CORS origins are currently set to localhost:3000 for development
-- The database file (`laborlink.db`) is included in the repository for convenience but should be excluded in production
+### For Hirers:
+1. Browse all available workers
+2. Filter workers by skills, location, rate, rating
+3. View detailed worker profiles
+4. Send customized hiring requests
+5. Track all requests (pending/active/completed)
+6. Communicate with workers
+7. Submit reviews and ratings after job completion
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### Backend (`.env`)
+```env
+DATABASE_URL=sqlite:///./laborlink.db
+SECRET_KEY=your-secret-key-here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+HOST=0.0.0.0
+PORT=8000
+```
+
+#### Frontend (`.env`)
+```env
+REACT_APP_API_URL=http://localhost:8000
+# For network access:
+# REACT_APP_API_URL=http://YOUR_IP_ADDRESS:8000
+```
+
+## 📝 Recent Updates
+
+### Latest Features (December 2025)
+- ✅ Complete review system with 5-star ratings
+- ✅ Environment-based configuration
+- ✅ Network access support for mobile devices
+- ✅ Fixed React hook warnings
+- ✅ Removed deprecated components
+- ✅ Enhanced CORS configuration
+- ✅ Improved error handling
 
 ## 🤝 Contributing
 
-This is a project for CEP (Computer Engineering Program). Contributions and improvements are welcome!
+This is an academic project developed as part of a Computer Engineering Program.
 
 ## 📄 License
 
-This project is part of an academic program at IUB (Independent University, Bangladesh).
+This project is for educational purposes.
+
+## 👨‍💻 Developer
+
+Developed as part of CEP (Computer Engineering Program) coursework.
+
+## 🐛 Known Issues & Limitations
+
+- Currently uses SQLite (consider PostgreSQL for production)
+- No real-time WebSocket support for chat (uses polling)
+- No image upload functionality yet
+- No payment integration
+- No email notifications
+
+## 🔮 Future Enhancements
+
+- [ ] Real-time chat with WebSockets
+- [ ] Email notifications
+- [ ] Image upload for profiles
+- [ ] Payment gateway integration
+- [ ] Advanced analytics dashboard
+- [ ] Worker portfolio/gallery
+- [ ] Job history and earnings reports
+- [ ] Multi-language support
+- [ ] Mobile native apps (React Native)
+
+## 📞 Support
+
+For issues or questions, please refer to the project documentation or create an issue in the repository.
 
 ---
 
-**Developed for**: CEP (Computer Engineering Program) - 5th Semester  
-**Institution**: Independent University, Bangladesh (IUB)
+**Built with ❤️ using FastAPI and React.js**

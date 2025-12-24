@@ -30,7 +30,7 @@ function Chat() {
       const targetUserId = parseInt(userParam);
       startConversationWithUser(targetUserId);
     }
-  }, [currentUserId, navigate]);
+  }, [currentUserId, navigate, searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchConversations() {
     try {

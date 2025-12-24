@@ -21,6 +21,7 @@ import MyRequests from "./pages/MyRequests";
 import WorkerRequests from "./pages/WorkerRequests";
 import WorkerProfile from "./pages/WorkerProfile";
 import HireWorker from "./pages/HireWorker";
+import ReviewForm from "./pages/ReviewForm";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -143,6 +144,14 @@ function App() {
           element={
             <ProtectedRoute>
               <HireWorker />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/review/:requestId"
+          element={
+            <ProtectedRoute>
+              <ReviewForm />
             </ProtectedRoute>
           }
         />

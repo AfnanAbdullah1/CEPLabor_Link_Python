@@ -16,6 +16,7 @@ function WorkerProfile() {
             return;
         }
         fetchWorkerProfile();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workerId, navigate]);
 
     async function fetchWorkerProfile() {

@@ -53,7 +53,7 @@ function Signup() {
                 hourly_rate: formData.hourly_rate ? parseFloat(formData.hourly_rate) : null
             };
 
-            const res = await API.post("/auth/signup", signupData);
+            await API.post("/auth/signup", signupData);
 
             // Don't store token - redirect to login instead
             // Show success message and redirect to login page

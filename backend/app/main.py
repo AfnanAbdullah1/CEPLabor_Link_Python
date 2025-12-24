@@ -15,8 +15,10 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000", 
         "http://127.0.0.1:3000",
-        "http://192.168.1.19:3000",  # Allow mobile/network access
-        "http://192.168.1.19:8000"   # Allow API docs access from network
+        "http://192.168.1.19:3000",  # Previous network IP
+        "http://10.122.168.236:3000",  # New network IP
+        "http://192.168.1.19:8000",
+        "http://10.122.168.236:8000"
     ],
     allow_credentials=True,
     allow_methods=["*"],

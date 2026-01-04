@@ -2,7 +2,7 @@
 
 A full-stack web application connecting skilled workers with hirers for job opportunities. Built with FastAPI (Python) backend and React.js frontend.
 
-> **🚀 Live Demo Coming Soon!** This app can be deployed to Render for free. See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
+> **🚀 Deploy for FREE Forever!** Deploy to Vercel + Supabase - 100% free with no expiration. See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for step-by-step instructions.
 
 ## 🎯 Overview
 
@@ -229,18 +229,33 @@ Frontend will run on: `http://localhost:3000`
 
 ## 🌐 Deployment to Production
 
-Want to deploy LaborLink to the cloud for free? 
+Deploy LaborLink to the cloud - **100% FREE FOREVER!**
 
-**See [DEPLOYMENT.md](DEPLOYMENT.md) for complete step-by-step instructions** to deploy your app to Render (includes backend, frontend, and PostgreSQL database).
+### 🏆 Recommended: Vercel + Supabase (FREE FOREVER)
 
-### Quick Deployment Summary:
-1. Create free Render account
-2. Deploy PostgreSQL database
-3. Deploy FastAPI backend
-4. Deploy React frontend
-5. Your app is live! 🎉
+**See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for complete guide**
 
-Total time: ~30 minutes
+✅ **Benefits:**
+- Completely free with no expiration
+- No credit card required
+- Fast auto-deploy from GitHub
+- Perfect for students and portfolios
+
+#### Quick Steps:
+1. Create Supabase account → Setup database
+2. Deploy backend to Vercel
+3. Deploy frontend to Vercel
+4. Your app is live! 🎉
+
+**Total time:** ~30-40 minutes
+
+---
+
+### Alternative: Render (Free for 30 days)
+
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for Render deployment**
+
+⚠️ Note: Render's free PostgreSQL expires after 30 days
 
 ### Default User Roles
 

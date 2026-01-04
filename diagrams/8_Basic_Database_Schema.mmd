@@ -1,0 +1,21 @@
+erDiagram
+    USERS ||--o{ HIRING_REQUESTS : "creates / receives"
+    USERS ||--o{ MESSAGES : "sends / receives"
+    USERS ||--o{ REVIEWS : "receives"
+    HIRING_REQUESTS ||--o| REVIEWS : "generates"
+
+    USERS {
+        string role "Worker / Hirer"
+    }
+
+    HIRING_REQUESTS {
+        string status "Pending / Accepted"
+    }
+
+    MESSAGES {
+        text content
+    }
+
+    REVIEWS {
+        int rating "1-5 Stars"
+    }

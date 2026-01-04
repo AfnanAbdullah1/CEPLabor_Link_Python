@@ -1,0 +1,41 @@
+graph TB
+    subgraph "Presentation Layer"
+        A[React.js Frontend]
+        A1[Login/Signup Pages]
+        A2[Worker Dashboard]
+        A3[Hirer Dashboard]
+        A4[Chat Interface]
+        A5[Profile Management]
+    end
+    
+    subgraph "Application Layer"
+        B[FastAPI Backend]
+        B1[Authentication Router]
+        B2[User Router]
+        B3[Hiring Router]
+        B4[Chat Router]
+        B5[Services Router]
+    end
+    
+    subgraph "Data Layer"
+        C[(SQLite Database)]
+        C1[Users Table]
+        C2[Hiring Requests Table]
+        C3[Messages Table]
+        C4[Reviews Table]
+    end
+    
+    A --> B
+    B --> C
+    
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+    A4 --> B4
+    A5 --> B2
+    
+    B1 --> C1
+    B2 --> C1
+    B3 --> C2
+    B3 --> C4
+    B4 --> C3

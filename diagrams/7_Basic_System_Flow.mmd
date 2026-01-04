@@ -1,0 +1,17 @@
+flowchart LR
+    Start([Start]) --> Login[Login / Signup]
+    Login --> Role{Check Role}
+    
+    Role -->|Hirer| H_Dash[Hirer Dashboard]
+    Role -->|Worker| W_Dash[Worker Dashboard]
+    
+    H_Dash --> Browse[Browse Workers]
+    Browse --> Hire[Hire Worker]
+    Hire --> Complete[Job Completion]
+    
+    W_Dash --> Receive[Receive Request]
+    Receive --> DoWork[Perform Job]
+    DoWork --> Complete
+    
+    Complete --> Review[Leave Review]
+    Review --> End([End])

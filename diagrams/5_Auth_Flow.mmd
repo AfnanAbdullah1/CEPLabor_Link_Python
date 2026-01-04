@@ -1,0 +1,33 @@
+flowchart TD
+    Start([User Visits App]) --> CheckAuth{Authenticated?}
+    CheckAuth -->|Yes| Dashboard[Redirect to Dashboard]
+    CheckAuth -->|No| Login[Show Login/Signup]
+    
+    Login --> SignupChoice{New User?}
+    SignupChoice -->|Yes| SignupForm[Fill Signup Form]
+    SignupChoice -->|No| LoginForm[Fill Login Form]
+    
+    SignupForm --> SelectRole[Select Role: Worker/Hirer]
+    SelectRole --> SubmitSignup[Submit Signup Data]
+    SubmitSignup --> ValidateSignup{Valid Data?}
+    
+    ValidateSignup -->|No| SignupError[Show Error Message]
+    SignupError --> SignupForm
+    
+    ValidateSignup -->|Yes| HashPassword[Hash Password]
+    HashPassword --> CreateUser[Create User Record]
+    CreateUser --> GenerateToken[Generate JWT Token]
+    
+    LoginForm --> SubmitLogin[Submit Credentials]
+    SubmitLogin --> ValidateLogin{Valid Credentials?}
+    
+    ValidateLogin -->|No| LoginError[Show Error Message]
+    LoginError --> LoginForm
+    
+    ValidateLogin -->|Yes| CheckPassword[Verify Password Hash]
+    CheckPassword --> GenerateToken
+    
+    GenerateToken --> StoreToken[Store Token in LocalStorage]
+    StoreToken --> Dashboard
+    
+    Dashboard --> End([User Authenticated])

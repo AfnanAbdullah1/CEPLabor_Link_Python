@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+    
+    User->>Frontend: Access Application
+    Frontend->>Backend: API Request (with JWT)
+    Backend->>Backend: Validate Token
+    Backend->>Database: Query Data
+    Database-->>Backend: Return Results
+    Backend->>Backend: Process Data
+    Backend-->>Frontend: JSON Response
+    Frontend->>Frontend: Update UI
+    Frontend-->>User: Display Content

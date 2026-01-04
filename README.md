@@ -2,6 +2,8 @@
 
 A full-stack web application connecting skilled workers with hirers for job opportunities. Built with FastAPI (Python) backend and React.js frontend.
 
+> **🚀 Live Demo Coming Soon!** This app can be deployed to Render for free. See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
+
 ## 🎯 Overview
 
 LaborLink is a comprehensive marketplace platform that bridges the gap between skilled labor workers and those seeking their services. The platform enables seamless job matching, real-time communication, hiring management, and quality feedback through reviews.
@@ -51,7 +53,7 @@ LaborLink is a comprehensive marketplace platform that bridges the gap between s
 
 ### Backend
 - **Framework**: FastAPI 0.104.1
-- **Database**: SQLite with SQLAlchemy 2.0.23 ORM
+- **Database**: SQLite (development) / PostgreSQL (production) with SQLAlchemy 2.0.23 ORM
 - **Authentication**: python-jose 3.3.0 (JWT tokens)
 - **Password Security**: passlib 1.7.4 with bcrypt
 - **Validation**: Pydantic (built into FastAPI)
@@ -224,6 +226,21 @@ Frontend will run on: `http://localhost:3000`
 4. **Access from mobile:**
    - Open browser on your phone
    - Navigate to: `http://YOUR_IP_ADDRESS:3000`
+
+## 🌐 Deployment to Production
+
+Want to deploy LaborLink to the cloud for free? 
+
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for complete step-by-step instructions** to deploy your app to Render (includes backend, frontend, and PostgreSQL database).
+
+### Quick Deployment Summary:
+1. Create free Render account
+2. Deploy PostgreSQL database
+3. Deploy FastAPI backend
+4. Deploy React frontend
+5. Your app is live! 🎉
+
+Total time: ~30 minutes
 
 ### Default User Roles
 

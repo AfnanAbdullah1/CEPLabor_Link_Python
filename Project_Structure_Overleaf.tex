@@ -1,0 +1,116 @@
+\documentclass{article}
+% Increase page area to fit more content
+\usepackage[a4paper, top=0.5in, bottom=0.5in, left=0.5in, right=0.5in]{geometry}
+\usepackage{dirtree}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+% specific libraries for breaking boxes
+\usepackage[most]{tcolorbox}
+
+% Define colors
+\definecolor{foldercolor}{RGB}{40, 100, 200}
+\definecolor{filecolor}{RGB}{80, 80, 80}
+
+% Official Brand Colors
+\definecolor{pyblue}{HTML}{306998}    % Official Python Blue
+\definecolor{pyyellow}{HTML}{FFD43B}  % Official Python Yellow
+\definecolor{reactcolor}{HTML}{61DAFB} % Official React Cyan
+\definecolor{jscolor}{HTML}{F7DF1E}    % Official JS Yellow
+\definecolor{csscolor}{HTML}{1572B6}   % Official CSS Blue (CSS3)
+
+% Custom commands for icons with colors
+\newcommand{\folder}[1]{\textcolor{foldercolor}{\faFolder} \textbf{#1}}
+\newcommand{\file}[1]{\textcolor{filecolor}{\faFile} #1}
+
+% Python files use the Official Blue
+\newcommand{\pyfile}[1]{\textcolor{pyblue}{\faPython} #1}
+% Requirements file uses the Official Yellow (to represent the other half of the logo)
+% Changed \faFileAlt -> \faFile to fix undefined control sequence error
+\newcommand{\reqfile}[1]{\textcolor{pyyellow}{\faFile} #1}
+
+% JS/React/CSS
+\newcommand{\jsfile}[1]{\textcolor{jscolor}{\faJs} #1}
+\newcommand{\reactfile}[1]{\textcolor{reactcolor}{\faReact} #1}
+\newcommand{\cssfile}[1]{\textcolor{csscolor}{\faCss3} #1}
+
+\begin{document}
+
+\section*{LaborLink Project Structure}
+
+% 'breakable' allows the box to span multiple pages if needed
+\begin{tcolorbox}[
+    title=Project Directory Tree,
+    colback=white,
+    colframe=black!75!white,
+    width=\textwidth,
+    breakable, 
+    enhanced
+]
+% Reduce line spacing slightly to fit more
+\setlength{\DTbaselineskip}{12pt}
+% Use smaller font
+\small
+
+\dirtree{%
+.1 \folder{CEPLabor\_Link\_Python}.
+.2 \folder{backend}.
+.3 \folder{app}.
+.4 \folder{auth}.
+.5 \pyfile{auth\_router.py}.
+.5 \pyfile{hashing.py}.
+.4 \folder{routers}.
+.5 \pyfile{chat.py}.
+.5 \pyfile{hiring.py}.
+.5 \pyfile{services.py}.
+.5 \pyfile{users.py}.
+.4 \folder{utils}.
+.5 \pyfile{helpers.py}.
+.5 \pyfile{notifications.py}.
+.4 \pyfile{database.py}.
+.4 \pyfile{main.py}.
+.4 \pyfile{models.py}.
+.4 \pyfile{schemas.py}.
+.3 \file{laborlink.db}.
+.3 \file{laborlink\_backup.db} \textit{(Backup)}.
+.3 \pyfile{migrate\_database.py}.
+.3 \reqfile{requirements.txt}.
+.2 \folder{frontend}.
+.3 \folder{public}.
+.3 \folder{src}.
+.4 \folder{components}.
+.5 \reactfile{ChatWindow.jsx}.
+.5 \reactfile{Navbar.jsx}.
+.5 \cssfile{Navbar.css}.
+.4 \folder{pages}.
+.5 \reactfile{BrowseWorkers.jsx}.
+.5 \reactfile{Chat.jsx}.
+.5 \reactfile{Dashboard.jsx}.
+.5 \reactfile{HirerDashboard.jsx}.
+.5 \reactfile{HireWorker.jsx}.
+.5 \reactfile{Login.jsx}.
+.5 \reactfile{MyRequests.jsx}.
+.5 \reactfile{Profile.jsx}.
+.5 \reactfile{ReviewForm.jsx}.
+.5 \reactfile{Signup.jsx}.
+.5 \reactfile{WorkerDashboard.jsx}.
+.5 \reactfile{WorkerProfile.jsx}.
+.5 \reactfile{WorkerRequests.jsx}.
+.4 \folder{styles}.
+.5 \cssfile{auth.css}.
+.5 \cssfile{components.css}.
+.5 \cssfile{dashboard.css}.
+.5 \cssfile{theme.css}.
+.4 \jsfile{api.js}.
+.4 \jsfile{App.js}.
+.4 \jsfile{index.js}.
+.3 \file{package.json}.
+.3 \file{package-lock.json}.
+.2 \file{CEP\_Report\_LaborLink.md}.
+.2 \file{CEP\_Python\_Guidelines.pdf}.
+.2 \file{README.md}.
+.2 \file{.env.example}.
+}
+\end{tcolorbox}
+
+\end{document}

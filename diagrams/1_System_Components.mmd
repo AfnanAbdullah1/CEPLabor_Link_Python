@@ -1,0 +1,21 @@
+graph TB
+    subgraph "Client Layer"
+        WEB[Web Browser]
+        UI[React.js UI]
+    end
+    
+    subgraph "Application Layer"
+        API[FastAPI Server]
+        AUTH[Authentication Module]
+        BL[Business Logic]
+    end
+    
+    subgraph "Data Layer"
+        DB[(SQLite Database)]
+    end
+    
+    WEB --> UI
+    UI --> |HTTP/REST| API
+    API --> AUTH
+    API --> BL
+    BL --> DB

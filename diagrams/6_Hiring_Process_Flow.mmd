@@ -1,0 +1,40 @@
+flowchart TD
+    Start([Hirer Logged In]) --> Browse[Browse Workers Page]
+    Browse --> Filter[Apply Filters]
+    Filter --> |Skills, Location, Rate| Workers[Display Matching Workers]
+    
+    Workers --> SelectWorker[Click Worker Profile]
+    SelectWorker --> ViewProfile[View Detailed Profile]
+    
+    ViewProfile --> Decision{Interested?}
+    Decision -->|No| Browse
+    Decision -->|Yes| HireButton[Click 'Hire Worker']
+    
+    HireButton --> HireForm[Fill Hiring Request Form]
+    HireForm --> FormFields[Enter Job Details]
+    FormFields --> |Title, Description, Location| FormFields2[Enter Terms]
+    FormFields2 --> |Hours, Rate| SubmitRequest[Submit Request]
+    
+    SubmitRequest --> ValidateRequest{Valid Data?}
+    ValidateRequest -->|No| ErrorMsg[Show Error]
+    ErrorMsg --> HireForm
+    
+    ValidateRequest -->|Yes| CreateRequest[Create Hiring Request]
+    CreateRequest --> NotifyWorker[Notify Worker]
+    NotifyWorker --> RequestStatus[Request Status: Pending]
+    
+    RequestStatus --> WorkerAction{Worker Response}
+    WorkerAction -->|Accept| Accepted[Status: Accepted]
+    WorkerAction -->|Reject| Rejected[Status: Rejected]
+    
+    Accepted --> WorkInProgress[Work Begins]
+    Rejected --> End1([Request Ended])
+    
+    WorkInProgress --> CompleteJob{Job Complete?}
+    CompleteJob -->|Yes| MarkComplete[Status: Completed]
+    CompleteJob -->|No| WorkInProgress
+    
+    MarkComplete --> ReviewPrompt[Prompt to Leave Review]
+    ReviewPrompt --> SubmitReview[Submit Rating & Comment]
+    SubmitReview --> UpdateRating[Update Worker Rating]
+    UpdateRating --> End2([Process Complete])
